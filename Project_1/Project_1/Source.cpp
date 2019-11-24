@@ -105,17 +105,31 @@ int main() {
 	glDeleteShader(vertexShader);
 	glDeleteShader(fragmentShader);
 	
-	// Triangle's vertices
-	float vertices[] = {
-		-0.5f, -0.5f, 0.0f,
-		0.5f, -0.5f, 0.0f,
-		0.0f, 0.5f, 0.0f
-	};
-
 	// Create vertex array object
 	unsigned int VAO;
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
+
+	// Triangle's vertices
+	/*float vertices[] = {
+		-0.5f, -0.5f, 0.0f,
+		0.5f, -0.5f, 0.0f,
+		0.0f, 0.5f, 0.0f
+	};*/
+
+	// Rectangle vertices
+	float vertices[] = {
+		0.5f, 0.5f, 0.0f,
+		0.5f, -0.5f, 0.0f,
+		-0.5f, -0.5f, 0.0f,
+		-0.5f, 0.5f, 0.0f
+	};
+
+	// Rectangle indices
+	unsigned int indices[] = {
+		0, 1, 3,
+		1, 2, 3
+	};
 
 	// Create vertex buffer object for vertex shader
 	unsigned int VBO;
@@ -123,9 +137,18 @@ int main() {
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
+	// Create element buffer object
+	unsigned int EBO;
+	glGenBuffers(1, &EBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
 	// Interpretation for vertex data
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*) NULL);
 	glEnableVertexAttribArray(0);
+
+	// Enable wireframe mode
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 	// Main loop
 	while (!glfwWindowShouldClose(window)) {
@@ -138,10 +161,13 @@ int main() {
 		glUseProgram(shaderProgram);
 
 		// Binding VAO
-		glBindVertexArray(VAO);
+		//glBindVertexArray(VAO);
 
 		// Drawing triangle
-		glDrawArrays(GL_TRIANGLES, 0, 3);
+		//glDrawArrays(GL_TRIANGLES, 0, 3);
+
+		// Drawing rectangle
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
