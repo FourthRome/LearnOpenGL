@@ -104,11 +104,6 @@ int main() {
 	// Clean up shaders
 	glDeleteShader(vertexShader);
 	glDeleteShader(fragmentShader);
-	
-	// Create vertex array object
-	unsigned int VAO;
-	glGenVertexArrays(1, &VAO);
-	glBindVertexArray(VAO);
 
 	// Triangle's vertices
 	/*float vertices[] = {
@@ -141,11 +136,35 @@ int main() {
 		-0.5f, 0.0f, 0.0f
 	};
 
+
+	// Create vertex array object
+	/*unsigned int VAO;
+	glGenVertexArrays(1, &VAO);
+	glBindVertexArray(VAO);*/
+
+	// Create two VAOs (for task with two triangles):
+	unsigned int VAOs[2];
+	glGenVertexArrays(2, VAOs);
+
 	// Create vertex buffer object for vertex shader
-	unsigned int VBO;
+	/*unsigned int VBO;
 	glGenBuffers(1, &VBO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);*/
+
+	// Create two VBOs for vertex shader (task with 2 triangles)
+	unsigned int VBOs[2];
+	glGenBuffers(2, VBOs);
+
+	// Binding buffers, filling them, setting interpretation (task with 2 triangles)
+	for (auto i = 0; i < 2; ++i) {
+		glBindVertexArray(VAOs[i]);
+		glBindBuffer(GL_ARRAY_BUFFER, VBOs[i]);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices) / 2, vertices + i * ((sizeof(vertices) / 2) / sizeof(float)), GL_STATIC_DRAW);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)NULL);
+		glEnableVertexAttribArray(0);
+		glBindVertexArray(0);
+	}
 
 	// Create element buffer object
 	/*unsigned int EBO;
@@ -154,8 +173,8 @@ int main() {
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);*/
 
 	// Interpretation for vertex data
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*) NULL);
-	glEnableVertexAttribArray(0);
+	/*glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*) NULL);
+	glEnableVertexAttribArray(0);*/
 
 	// Enable wireframe mode
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -180,8 +199,12 @@ int main() {
 		//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 		// Drawing triangles
-		glad_glDrawArrays(GL_TRIANGLES, 0, 6);
-
+		for (auto i = 0; i < 2; ++i) {
+			glBindVertexArray(VAOs[i]);
+			glDrawArrays(GL_TRIANGLES, 0, 3);
+			glBindVertexArray(0);
+		}
+		
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
