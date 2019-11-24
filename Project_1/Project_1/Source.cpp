@@ -2,6 +2,22 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+const char *vertexShaderSource = "#version 330 core\n\
+layout(location = 0) in vec3 aPos;\n\
+\n\
+void main()\n\
+{\n\
+	gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n\
+}\0";
+
+const char *fragmentShaderSource = "#version 330 core\n\
+out vec4 FragColor;\n\
+\n\
+void main()\n\
+{\n\
+	FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n\
+}\0";
+
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
 	// Function to be called on window resize
 	glViewport(0, 0, width, height);
@@ -29,6 +45,7 @@ int main() {
 		return -1;
 	}
 	glfwMakeContextCurrent(window);
+	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
 	// Load GLAD
 	if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress)) {
@@ -37,22 +54,8 @@ int main() {
 	}
 
 	// Create a viewport within window
-	glViewport(0, 0, 800, 600);
-	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-
-	// Triangle's vertices
-	float vertices[] = {
-		-0.5f, -0.5f, 0.0f,
-		0.5f, -0.5f, 0.0f,
-		0.0f, 0.5f, 0.0f
-	};
-
-	// Create vertex buffer object for vertex shader
-	unsigned int VBO;
-	glGenBuffers(1, &VBO);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
+	//glViewport(0, 0, 800, 600);
+	
 	// Create vertex shader
 	unsigned int vertexShader;
 	vertexShader = glCreateShader(GL_VERTEX_SHADER);
@@ -66,6 +69,7 @@ int main() {
 	if (!success) {
 		glGetShaderInfoLog(vertexShader, sizeof(infoLog), NULL, infoLog);
 		std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
+		return -1;
 	}
 
 	// Create fragment shader
@@ -79,6 +83,7 @@ int main() {
 	if (!success) {
 		glGetShaderInfoLog(fragmentShader, sizeof(infoLog), NULL, infoLog);
 		std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
+		return -1;
 	}
 
 	// Creating shader program
@@ -93,12 +98,34 @@ int main() {
 	if (!success) {
 		glGetProgramInfoLog(shaderProgram, sizeof(infoLog), NULL, infoLog);
 		std::cout << "ERROR::SHADER::PROGRAM::LINKAGE_FAILED\n" << infoLog << std::endl;
+		return -1;
 	}
 
-	// Activate shader program
-	glUseProgram(shaderProgram);
+	// Clean up shaders
 	glDeleteShader(vertexShader);
 	glDeleteShader(fragmentShader);
+	
+	// Triangle's vertices
+	float vertices[] = {
+		-0.5f, -0.5f, 0.0f,
+		0.5f, -0.5f, 0.0f,
+		0.0f, 0.5f, 0.0f
+	};
+
+	// Create vertex array object
+	unsigned int VAO;
+	glGenVertexArrays(1, &VAO);
+	glBindVertexArray(VAO);
+
+	// Create vertex buffer object for vertex shader
+	unsigned int VBO;
+	glGenBuffers(1, &VBO);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+	// Interpretation for vertex data
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*) NULL);
+	glEnableVertexAttribArray(0);
 
 	// Main loop
 	while (!glfwWindowShouldClose(window)) {
@@ -106,7 +133,16 @@ int main() {
 
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
-		
+
+		// Activate shader program
+		glUseProgram(shaderProgram);
+
+		// Binding VAO
+		glBindVertexArray(VAO);
+
+		// Drawing triangle
+		glDrawArrays(GL_TRIANGLES, 0, 3);
+
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
