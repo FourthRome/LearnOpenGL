@@ -20,7 +20,7 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
-    <ProjectGuid>{D1C54932-D939-46E1-8DA2-515CD42B475C}</ProjectGuid>
+    <ProjectGuid>{4BAE0F15-A17B-420F-8FD1-9ECF0EC6D8FC}</ProjectGuid>
     <RootNamespace>Project1</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
     <ProjectName>HelloTriangle</ProjectName>
