@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.29230.47
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HelloTriangle", "HelloTriangle\HelloTriangle.vcxproj", "{4BAE0F15-A17B-420F-8FD1-9ECF0EC6D8FC}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Shaders", "Shaders\Shaders.vcxproj", "{2C9C18FC-A09E-44F6-8B97-FB983C5AC28D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,6 +23,14 @@ Global
 		{4BAE0F15-A17B-420F-8FD1-9ECF0EC6D8FC}.Release|x64.Build.0 = Release|x64
 		{4BAE0F15-A17B-420F-8FD1-9ECF0EC6D8FC}.Release|x86.ActiveCfg = Release|Win32
 		{4BAE0F15-A17B-420F-8FD1-9ECF0EC6D8FC}.Release|x86.Build.0 = Release|Win32
+		{2C9C18FC-A09E-44F6-8B97-FB983C5AC28D}.Debug|x64.ActiveCfg = Debug|x64
+		{2C9C18FC-A09E-44F6-8B97-FB983C5AC28D}.Debug|x64.Build.0 = Debug|x64
+		{2C9C18FC-A09E-44F6-8B97-FB983C5AC28D}.Debug|x86.ActiveCfg = Debug|Win32
+		{2C9C18FC-A09E-44F6-8B97-FB983C5AC28D}.Debug|x86.Build.0 = Debug|Win32
+		{2C9C18FC-A09E-44F6-8B97-FB983C5AC28D}.Release|x64.ActiveCfg = Release|x64
+		{2C9C18FC-A09E-44F6-8B97-FB983C5AC28D}.Release|x64.Build.0 = Release|x64
+		{2C9C18FC-A09E-44F6-8B97-FB983C5AC28D}.Release|x86.ActiveCfg = Release|Win32
+		{2C9C18FC-A09E-44F6-8B97-FB983C5AC28D}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

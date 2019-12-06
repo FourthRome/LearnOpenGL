@@ -13,7 +13,7 @@ void main()\n\
 	vertexColor = vec4(0.5, 0.0, 0.0, 1.0);\n\
 }\0";
 
-const char *fragmentShaderSource = "#version 330 core\n\
+const char* fragmentShaderSource = "#version 330 core\n\
 out vec4 FragColor;\n\
 \n\
 void main()\n\
@@ -52,7 +52,7 @@ int main() {
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	// Create GLFW window
-	GLFWwindow* window = glfwCreateWindow(800, 600, "First OpenGL scene", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(800, 600, "OpenGL shaders", NULL, NULL);
 	if (window == NULL) {
 		std::cout << "Failed to create GLFW window" << std::endl;
 		glfwTerminate();
@@ -62,14 +62,14 @@ int main() {
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
 	// Load GLAD
-	if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress)) {
+	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
 		std::cout << "Failed to initialize GLAD" << std::endl;
 		return -1;
 	}
 
 	// Create a viewport within window
 	//glViewport(0, 0, 800, 600);
-	
+
 	// Create vertex shader
 	unsigned int vertexShader;
 	vertexShader = glCreateShader(GL_VERTEX_SHADER);
@@ -108,7 +108,7 @@ int main() {
 		glShaderSource(fragmentShaders[i], 1, &fragmentShaderSources[i], NULL);
 		glCompileShader(fragmentShaders[i]);
 	}
-	
+
 	//// Check if fragment shader compiled successfully
 	//glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
 	//if (!success) {
@@ -268,12 +268,12 @@ int main() {
 		for (auto i = 0; i < 2; ++i) {
 			// Activate shader program
 			glUseProgram(shaderPrograms[i]);
-			
+
 			glBindVertexArray(VAOs[i]);
 			glDrawArrays(GL_TRIANGLES, 0, 3);
 			glBindVertexArray(0);
 		}
-		
+
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
