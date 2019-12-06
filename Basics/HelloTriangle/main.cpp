@@ -204,19 +204,19 @@ int main() {
 
 
 	// Create vertex array object
-	/*unsigned int VAO;
-	glGenVertexArrays(1, &VAO);
-	glBindVertexArray(VAO);*/
+	//unsigned int VAO;
+	//glGenVertexArrays(1, &VAO);
+	//glBindVertexArray(VAO);
 
 	// Create two VAOs (for task with two triangles):
 	unsigned int VAOs[2];
 	glGenVertexArrays(2, VAOs);
 
 	// Create vertex buffer object for vertex shader
-	/*unsigned int VBO;
-	glGenBuffers(1, &VBO);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);*/
+	//unsigned int VBO;
+	//glGenBuffers(1, &VBO);
+	//glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	//glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
 	// Create two VBOs for vertex shader (task with 2 triangles)
 	unsigned int VBOs[2];
