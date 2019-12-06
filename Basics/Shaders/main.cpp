@@ -150,7 +150,8 @@ int main() {
 
 	// Get uniform attributes' locations (task with uniform)
 	//int vertexColorLocation = glGetUniformLocation(shaderProgram, "ourColor");
-
+	shader.use();
+	shader.setFloat("triangleOffset", 0.5);
 
 	// Main loop
 	while (!glfwWindowShouldClose(window)) {
