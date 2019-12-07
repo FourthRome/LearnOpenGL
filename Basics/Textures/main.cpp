@@ -6,6 +6,9 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
+// Degree of texture visibility
+float leftToRight = 0.5;
+
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
 	// Function to be called on window resize
 	glViewport(0, 0, width, height);
@@ -15,6 +18,26 @@ void processInput(GLFWwindow* window) {
 	// Function to catch ESC keypress
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
 		glfwSetWindowShouldClose(window, true);
+	}
+	
+	// If left arrow key is pressed, make first texture more visible
+	if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
+		if (leftToRight < 1) {
+			leftToRight += 0.001;
+		}
+		if (leftToRight > 1) {
+			leftToRight = 1;
+		}
+	}
+
+	// If right arrow key is pressed, make second texture more visible
+	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
+		if (leftToRight > 0) {
+			leftToRight -= 0.001;
+		}
+		if (leftToRight < 0) {
+			leftToRight = 0;
+		}
 	}
 }
 
@@ -88,7 +111,7 @@ int main() {
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 		// Generating textures and filling them
 		int width, height, nrChannels;
@@ -114,10 +137,10 @@ int main() {
 	// Rectangle's vertices
 	float vertices[] = {
 		// positions          // colors           // texture coords
-		 0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   0.55f, 0.55f,   // top right
-		 0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   0.55f, 0.45f,   // bottom right
-		-0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.45f, 0.45f,   // bottom left
-		-0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.45f, 0.55f    // top left 
+		 0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // top right
+		 0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // bottom right
+		-0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // bottom left
+		-0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // top left 
 	};
 
 	// Rectangle's indices
@@ -151,8 +174,6 @@ int main() {
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
-
-
 	// Enable wireframe mode
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
@@ -174,10 +195,13 @@ int main() {
 
 		// Binding texture
 		//glBindTexture(GL_TEXTURE_2D, textures[0]);
-		glActiveTexture(1);
+		//glActiveTexture(1);
 
 		// Binding VAO
 		glBindVertexArray(VAO);
+
+		// Change variables' values
+		shader.setFloat("leftToRight", leftToRight);
 
 		// Drawing triangle
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
